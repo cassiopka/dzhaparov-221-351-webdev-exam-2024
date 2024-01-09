@@ -1,0 +1,60 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    background-color: blanchedalmond;
+    color: blue;
+    margin-bottom: 60px;
+}
+
+.alerts {
+    position: sticky;
+    top: 0;
+    text-align: center;
+}
+
+.text-sandybrown {
+    color: black; 
+}
+
+.red {
+    background-color: red; 
+}
+
+.blanchedalmond {
+    background-color: blanchedalmond; 
+}
+
+.text-blanchedalmond {
+    color: black; 
+}
+
+.logo {
+    width: 75px;
+}
+
+.company-name {
+    color: red; 
+}
+
+.links {
+    text-decoration: none;
+    color: green; 
+}
+
+.links:hover {
+    color: green; 
+}
+
+.table-th {
+    width: 100;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+}
