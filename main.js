@@ -41,8 +41,6 @@ function createTooltipTh(data) {
     desc.setAttribute("data-bs-placement", "top");
     desc.setAttribute("data-bs-custom-class", "custom-tooltip");
     desc.setAttribute("data-bs-title", data);
-    // console.log(data);
-    // console.log(desc);
     return desc;
 }
 
@@ -156,7 +154,6 @@ function createGuidesTable(guides, lang, minInput, maxInput) {
         btnTd.append(btn);
         btnTd.onclick = onClickGuide;
         row.append(btnTd);
-        //Сравнение с фильтрами
         if ((lang == guide.language) && (minInput <= guide.workExperience) && (guide.workExperience <= maxInput)) guidesTable.append(row);
         else if ((lang == "Язык экскурсии") && (minInput <= guide.workExperience) && (guide.workExperience <= maxInput)) {
             guidesTable.append(row);
@@ -270,8 +267,6 @@ function createRoute(data) {
     btn.setAttribute("type", "button");
     btn.setAttribute("aria-expanded", "false");
     btn.setAttribute("id", data.id);
-    //btn.setAttribute("href", "#guides-list");
-    //btn.href = "#guides-list";
     btn.textContent = "Выбрать";
     btnTd.append(btn);
     btnTd.onclick = searchGuidesForRoute;
@@ -560,17 +555,18 @@ function checkOptionFirst() {
 
 function checkOptionSecond() {
     let option2 = document.querySelector("#option2");
-    let form = document.querySelector("#create-task-form");
-    let numVisitors = parseInt(form.elements["customRange2"].value);
-    let price = 1;
-
-    if (option2.checked && numVisitors >= 1 && numVisitors <= 10) {
-        price = (numVisitors <= 5) ? price * 1.15 : price * 1.25;
-    } else {
-        price = (numVisitors > 10) ? 0 : price;
+    if (option2.checked) {
+        let form = document.querySelector("#create-task-form");
+        let numVisitors = parseInt(form.elements["customRange2"].value);
+        let price = 1;
+        if (numVisitors >= 1 && numVisitors <= 10) {
+            price = (numVisitors <= 5) ? price * 1.15 : price * 1.25;
+        } else {
+            price = (numVisitors > 10) ? 0 : price;
+        }
+        return price;
     }
-
-    return price;
+    return 1; 
 }
 
 function changeNumberOfPeople(event) {
@@ -633,6 +629,12 @@ async function sendRequest(event) {
     formForSend.append("price", form.elements["price"].value);
     formForSend.append("optionFirst", (form.elements["option1"].checked) ? 1 : 0);
     formForSend.append("optionSecond", (form.elements["option2"].checked) ? 1 : 0);
+
+    if (form.elements["option2"].checked && parseInt(form.elements["price"].value) === 0) {
+        showAlert("Нельзя оформить заявку, количество посетителей превышает 10", "alert-danger");
+        return;
+    }
+
     let nUrl = new URL(url + "orders");
     nUrl.searchParams.append("api_key", apiKey);
     if (form.elements["time"].validity.valid) {
@@ -655,6 +657,7 @@ async function sendRequest(event) {
         event.target.setAttribute("type", "submit");
     }
 }
+
 
 window.onload = function () {
     downloadData();
