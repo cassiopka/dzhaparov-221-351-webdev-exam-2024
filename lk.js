@@ -117,7 +117,7 @@ function clickOnEye(event) {
     option1.setAttribute("type", "text");
     option1.classList.add("form-control-plaintext", "text-blanchedalmond");
     option1.setAttribute("readonly", "");
-    option1.value = "Скидка для студентво и школьников (15% скидка)";
+    option1.value = "Интерактивный путеводитель";
     let routeOptionF = event.target.parentNode.parentNode.getAttribute("data-option1");
     if (routeOptionF == "true") options.append(option1);
 
@@ -125,7 +125,7 @@ function clickOnEye(event) {
     option2.setAttribute("type", "text");
     option2.classList.add("form-control-plaintext","text-blanchedalmond");
     option2.setAttribute("readonly", "");
-    option2.value = "Легкие закуски и горячие напитки во время экскурсии (+1000 рублей за каждого посетителя)";
+    option2.value = "Сопровождение сурдопереводчика";
     let routeOptionS = event.target.parentNode.parentNode.getAttribute("data-option2");
     if (routeOptionS == "true") options.append(option2);
 
@@ -188,19 +188,19 @@ function checkOptionFirst() {
 
 function checkOptionSecond() {
     let option2 = document.querySelector("#option2");
-    let form = document.querySelector("#create-task-form");
-    let numVisitors = parseInt(form.elements["customRange2"].value);
-    let price = 1;
-
-    if (option2.checked && numVisitors >= 1 && numVisitors <= 10) {
-        price = (numVisitors <= 5) ? price * 1.15 : price * 1.25;
-    } else {
-        price = (numVisitors > 10) ? 0 : price;
+    if (option2.checked) {
+        let form = document.querySelector("#create-task-form");
+        let numVisitors = parseInt(form.elements["customRange2"].value);
+        let price = 1;
+        if (numVisitors >= 1 && numVisitors <= 10) {
+            price = (numVisitors <= 5) ? price * 1.15 : price * 1.25;
+        } else {
+            price = (numVisitors > 10) ? 0 : price;
+        }
+        return price;
     }
-
-    return price;
+    return 1; 
 }
-
 
 function guideServiceCost() {                       
     let price = document.querySelector(".table-routes").getAttribute("data-pricePerHour");
@@ -263,56 +263,6 @@ function clickOnPen(event) {
     personsText.value = persons;
 
     modal.querySelector(".options").innerHTML = "";
-    
-    let option1 = modal.querySelector(".form-switch-option1");
-    option1.innerHTML = "";
-    let switchInput1 = document.createElement("input");
-    switchInput1.classList.add("form-check-input");
-    switchInput1.setAttribute("type", "checkbox");
-    switchInput1.setAttribute("role", "switch");
-    switchInput1.setAttribute("id", "option1");
-    switchInput1.oninput = changeTotalPrice;
-    let switchLabel1 = document.createElement("label");
-    switchLabel1.classList.add("form-check-label", "text-blanchedalmond");
-    switchLabel1.setAttribute("for", "option1");
-    switchLabel1.textContent = "Использовать скидку студентов и школьников";
-    let routeOptionF = event.target.parentNode.parentNode.getAttribute("data-option1");
-    if (routeOptionF == "true") {
-        switchInput1.checked = true;
-        switchInput1.setAttribute("readonly", "");
-        switchInput1.setAttribute("disabled", "");
-    } else {
-        switchInput1.checked = false;
-        switchInput1.removeAttribute("readonly");
-        switchInput1.removeAttribute("disabled");
-    } 
-    option1.append(switchInput1);
-    option1.append(switchLabel1);
-
-    let option2 = modal.querySelector(".form-switch-option2");
-    option2.innerHTML = "";
-    let switchInput2 = document.createElement("input");
-    switchInput2.classList.add("form-check-input", "text-blanchedalmond");
-    switchInput2.setAttribute("type", "checkbox");
-    switchInput2.setAttribute("role", "switch");
-    switchInput2.setAttribute("id", "option2");
-    switchInput2.oninput = changeTotalPrice;
-    let switchLabel2 = document.createElement("label");
-    switchLabel2.classList.add("form-check-label", "text-blanchedalmond");
-    switchLabel2.setAttribute("for", "option2");
-    switchLabel2.textContent = "Легкие закуски и горячие напитки во время экскурсии";
-    let routeOptionS = event.target.parentNode.parentNode.getAttribute("data-option2");
-    if (routeOptionS == "true") {
-        switchInput2.checked = true;
-        switchInput2.setAttribute("readonly", "");
-        switchInput2.setAttribute("disabled", "");
-    } else {
-        switchInput2.checked = false;
-        switchInput2.removeAttribute("readonly");
-        switchInput2.removeAttribute("disabled");
-    } 
-    option2.append(switchInput2);
-    option2.append(switchLabel2);
 
     let price = document.querySelector("#price");
     let priceRoute = event.target.parentNode.parentNode.children[3].textContent;
